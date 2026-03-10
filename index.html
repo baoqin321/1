@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="浏览器本地处理图片和视频水印，支持框选修补、修复画笔、模糊、像素化和本地导出。">
+  <meta name="format-detection" content="telephone=no, email=no, address=no">
+  <meta name="theme-color" content="#0b1118">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="去水印工作台">
+  <title>去水印工作台 | 图片视频本地去水印</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Browser-only Studio</p>
+        <h1>去水印工作台</h1>
+        <p class="hero-text">
+          在浏览器本地处理图片和视频。上传文件后拖拽框选水印区域，再选择模糊、像素化、颜色覆盖或邻域填补。
+        </p>
+      </div>
+      <div class="hero-meta">
+        <span class="pill">无需后端</span>
+        <span class="pill">本地处理</span>
+        <span class="pill">视频导出为 WebM</span>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="panel controls-panel">
+        <div class="panel-heading">
+          <h2>处理设置</h2>
+          <p>先选媒体类型，再上传文件。</p>
+        </div>
+
+        <div class="tab-switch" role="tablist" aria-label="媒体类型">
+          <button class="tab-button is-active" type="button" data-tab="image">图片</button>
+          <button class="tab-button" type="button" data-tab="video">视频</button>
+        </div>
+
+        <label class="field">
+          <span class="field-label">上传文件</span>
+          <input id="fileInput" class="file-input" type="file" accept="image/*">
+          <small id="uploadHint" class="field-help">支持 JPG、PNG、WebP。</small>
+        </label>
+
+        <label class="field">
+          <span class="field-label">处理方式</span>
+          <select id="modeSelect" class="select-input">
+            <option value="repair">邻域填补</option>
+            <option value="blur">高斯模糊</option>
+            <option value="pixelate">像素化</option>
+            <option value="fill">颜色覆盖</option>
+          </select>
+          <small class="field-help">邻域填补适合边角水印，其余方式更稳定。</small>
+        </label>
+
+        <label class="field">
+          <span class="field-label">强度</span>
+          <div class="range-row">
+            <input id="intensityInput" type="range" min="4" max="36" step="1" value="14">
+            <output id="intensityValue" for="intensityInput">14</output>
+          </div>
+        </label>
+
+        <label class="field" id="brushField">
+          <span class="field-label">修复画笔大小</span>
+          <div class="range-row">
+            <input id="brushSizeInput" type="range" min="18" max="120" step="1" value="42">
+            <output id="brushSizeValue" for="brushSizeInput">42</output>
+          </div>
+          <small class="field-help">用于手动刷掉自动处理后残留的细小痕迹。</small>
+        </label>
+
+        <div class="action-group" id="imageActions">
+          <button id="applyImageButton" type="button" class="button button-primary" disabled>应用到图片</button>
+          <button id="resetImageButton" type="button" class="button" disabled>重置图片</button>
+          <button id="downloadImageButton" type="button" class="button" disabled>下载 PNG</button>
+        </div>
+
+        <div class="action-group is-hidden" id="videoActions">
+          <button id="playPauseButton" type="button" class="button button-primary" disabled>播放</button>
+          <button id="restartVideoButton" type="button" class="button" disabled>回到开头</button>
+          <button id="exportVideoButton" type="button" class="button" disabled>导出 WebM</button>
+        </div>
+
+        <label class="field is-hidden" id="timelineField">
+          <span class="field-label">视频时间轴</span>
+          <div class="timeline-row">
+            <input id="timelineInput" type="range" min="0" max="1" step="0.001" value="0" disabled>
+            <span id="timeLabel">00:00 / 00:00</span>
+          </div>
+        </label>
+
+        <div class="action-group utility-group">
+          <button id="clearSelectionButton" type="button" class="button" disabled>清除框选</button>
+        </div>
+
+        <div class="tips">
+          <p>使用提示</p>
+          <ul>
+            <li>拖拽框选需要处理的水印区域。</li>
+            <li>图片处理是逐次写入，必要时可以重置后重来。</li>
+            <li>视频预览是实时叠加，导出时按当前框选与模式处理整段视频。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="panel stage-panel">
+        <div class="stage-header">
+          <div>
+            <h2>预览区</h2>
+            <p>在画面上直接拖拽框选水印区域。</p>
+          </div>
+          <span id="statusPill" class="status-pill">等待上传文件</span>
+        </div>
+
+        <div class="viewport-toolbar">
+          <div class="tool-cluster">
+            <button id="selectModeButton" type="button" class="mini-button is-active" disabled>框选</button>
+            <button id="brushModeButton" type="button" class="mini-button" disabled>修复画笔</button>
+            <button id="panModeButton" type="button" class="mini-button" disabled>拖动</button>
+          </div>
+          <div class="tool-cluster">
+            <button id="zoomOutButton" type="button" class="mini-button" disabled>-</button>
+            <span id="zoomLabel" class="zoom-label">100%</span>
+            <button id="zoomInButton" type="button" class="mini-button" disabled>+</button>
+            <button id="fitViewButton" type="button" class="mini-button" disabled>适应</button>
+          </div>
+        </div>
+
+        <p class="viewport-help">滚轮缩放，切到“拖动”后可平移画面，再切回“框选”做局部处理。</p>
+
+        <div class="stage" id="previewStage">
+          <div id="emptyState" class="empty-state">
+            <strong>把文件载入这里开始处理</strong>
+            <span>图片支持即时修补，视频支持本地逐帧处理和导出。</span>
+          </div>
+
+          <div id="canvasStack" class="canvas-stack is-hidden">
+            <canvas id="mediaCanvas"></canvas>
+            <canvas id="overlayCanvas"></canvas>
+          </div>
+        </div>
+
+        <video id="sourceVideo" class="visually-hidden" playsinline preload="metadata"></video>
+
+        <p class="legal-note">
+          仅建议用于你有权编辑的媒体内容。所有处理默认在本地浏览器内完成，不上传到服务器。
+        </p>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

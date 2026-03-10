@@ -1,0 +1,19 @@
+{
+  "name": "去水印工作台",
+  "short_name": "去水印",
+  "description": "浏览器本地处理图片和视频水印，支持框选修补、修复画笔、模糊、像素化和本地导出。",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b1118",
+  "theme_color": "#0b1118",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
