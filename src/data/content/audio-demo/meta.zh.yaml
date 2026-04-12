@@ -1,0 +1,8 @@
+title: 音频片段示例
+description: 使用原生播放器展示 audio 类型的内容条目。
+date: 2026-02-10
+type: audio
+locale: zh
+slug: audio-demo
+draft: false
+audioUrl: https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3

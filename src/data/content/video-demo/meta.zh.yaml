@@ -1,0 +1,9 @@
+title: 视频分享示例
+description: 一条带嵌入播放器的内容示例，用于展示 video 类型。
+date: 2026-02-26
+type: video
+locale: zh
+slug: video-demo
+draft: false
+cover: ./cover.svg
+videoUrl: https://www.youtube.com/embed/aqz-KE-bpKQ

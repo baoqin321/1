@@ -1,0 +1,9 @@
+title: Link Card Demo
+description: A sample external link card with added context.
+date: 2026-01-30
+type: link
+locale: en
+slug: link-demo
+draft: false
+cover: ./cover.svg
+linkUrl: https://example.com/

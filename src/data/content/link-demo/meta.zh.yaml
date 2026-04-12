@@ -1,0 +1,9 @@
+title: 外部链接卡片
+description: 展示 link 类型内容的外链卡片与补充说明。
+date: 2026-01-30
+type: link
+locale: zh
+slug: link-demo
+draft: false
+cover: ./cover.svg
+linkUrl: https://example.com/

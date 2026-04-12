@@ -1,0 +1,7 @@
+title: 草稿示例
+description: 这是一篇不会出现在正式列表中的草稿。
+date: 2026-03-01
+type: text
+locale: zh
+slug: draft-note
+draft: true

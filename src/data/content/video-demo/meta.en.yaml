@@ -1,0 +1,9 @@
+title: Video Demo
+description: A sample entry with an embedded player for the video type.
+date: 2026-02-26
+type: video
+locale: en
+slug: video-demo
+draft: false
+cover: ./cover.svg
+videoUrl: https://www.youtube.com/embed/aqz-KE-bpKQ

@@ -1,0 +1,8 @@
+title: Audio Clip Demo
+description: A sample entry using the native audio player.
+date: 2026-02-10
+type: audio
+locale: en
+slug: audio-demo
+draft: false
+audioUrl: https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3
